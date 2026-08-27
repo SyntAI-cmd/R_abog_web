@@ -19,7 +19,14 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const raiz = fileURLToPath(new URL("../", import.meta.url));
-const carpetaD1 = join(raiz, ".wrangler", "state", "v3", "d1", "miniflare-D1DatabaseObject");
+const carpetaD1 = join(
+  raiz,
+  ".wrangler",
+  "state",
+  "v3",
+  "d1",
+  "miniflare-D1DatabaseObject",
+);
 const carpetaMigraciones = join(raiz, "drizzle");
 
 function localizarBase() {
@@ -28,8 +35,11 @@ function localizarBase() {
       "No existe la base local. Levantá el servidor una vez con `npm run dev` para que Miniflare la cree.",
     );
   }
-  const archivos = readdirSync(carpetaD1).filter((f) => f.endsWith(".sqlite") && f !== "metadata.sqlite");
-  if (archivos.length === 0) throw new Error("No se encontró ningún archivo .sqlite de D1.");
+  const archivos = readdirSync(carpetaD1).filter(
+    (f) => f.endsWith(".sqlite") && f !== "metadata.sqlite",
+  );
+  if (archivos.length === 0)
+    throw new Error("No se encontró ningún archivo .sqlite de D1.");
   // El de nombre más largo es el hash de la base de la aplicación; `metadata`
   // es el registro interno de Miniflare.
   return join(carpetaD1, archivos.sort((a, b) => b.length - a.length)[0]);
@@ -43,7 +53,10 @@ db.exec(`CREATE TABLE IF NOT EXISTS __migraciones_aplicadas (
 )`);
 
 const aplicadas = new Set(
-  db.prepare("SELECT tag FROM __migraciones_aplicadas").all().map((f) => f.tag),
+  db
+    .prepare("SELECT tag FROM __migraciones_aplicadas")
+    .all()
+    .map((f) => f.tag),
 );
 
 const migraciones = readdirSync(carpetaMigraciones)
@@ -57,7 +70,9 @@ if (process.argv.includes("--estado")) {
     console.log(`  ${aplicadas.has(tag) ? "✓" : "·"} ${tag}`);
   }
   const tablas = db
-    .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name")
+    .prepare(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name",
+    )
     .all()
     .map((f) => f.name);
   console.log(`\nTablas: ${tablas.join(", ")}`);
@@ -72,7 +87,9 @@ if (process.argv.includes("--semilla")) {
   let cargados = 0;
 
   for (let dia = 2; dia <= 6; dia++) {
-    const fecha = new Date(hoy.getTime() + dia * 86400000).toISOString().slice(0, 10);
+    const fecha = new Date(hoy.getTime() + dia * 86400000)
+      .toISOString()
+      .slice(0, 10);
     for (const hora of ["09:00", "10:30", "15:00", "16:30"]) {
       db.prepare(
         `INSERT INTO availability (date, time, enabled, note, created_at) VALUES (?, ?, 1, '', ?)
@@ -107,19 +124,22 @@ for (const archivo of migraciones) {
       // informa cualquier otro fallo.
       const mensaje = String(error?.message ?? error);
       if (/already exists|duplicate column/i.test(mensaje)) continue;
-      console.error(`\nFalló en ${tag}:\n${sentencia.slice(0, 200)}\n${mensaje}`);
+      console.error(
+        `\nFalló en ${tag}:\n${sentencia.slice(0, 200)}\n${mensaje}`,
+      );
       process.exit(1);
     }
   }
 
-  db.prepare("INSERT INTO __migraciones_aplicadas (tag, aplicada_en) VALUES (?, ?)").run(
-    tag,
-    new Date().toISOString(),
-  );
+  db.prepare(
+    "INSERT INTO __migraciones_aplicadas (tag, aplicada_en) VALUES (?, ?)",
+  ).run(tag, new Date().toISOString());
   console.log(`✓ ${tag}`);
   aplicadasAhora++;
 }
 
 console.log(
-  aplicadasAhora === 0 ? "La base local ya está al día." : `${aplicadasAhora} migración(es) aplicada(s).`,
+  aplicadasAhora === 0
+    ? "La base local ya está al día."
+    : `${aplicadasAhora} migración(es) aplicada(s).`,
 );

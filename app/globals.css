@@ -7,7 +7,9 @@
   --cream: #f4efe6;
   --ivory: #fbf8f2;
   --ink: #172525;
-  --muted: #64706e;
+  /* Oscurecido: #64706e daba 4.49:1 sobre el marfil, apenas por debajo del
+     4.5:1 que WCAG pide para texto normal (I-A11Y-02). */
+  --muted: #52605e;
   --line: rgba(18, 61, 61, 0.15);
 }
 
@@ -58,7 +60,9 @@ a {
   letter-spacing: 0.18em;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #9b7c55;
+  /* El arena de marca (#9b7c55) da 3.88:1 sobre el marfil y es texto chico:
+     necesita 4.5:1. Se oscurece manteniendo el mismo tono. */
+  color: #7a5f38;
 }
 
 .section {
@@ -402,8 +406,22 @@ a {
   color: white;
 }
 
-.process .eyebrow {
+/* El eyebrow tiene dos contextos. Sobre marfil necesita un tono oscuro para
+   llegar a 4.5:1; sobre los bloques de petróleo necesita el arena claro, o pasa
+   a ser marrón oscuro sobre verde oscuro. Se lista cada contexto oscuro en vez
+   de usar un solo color de compromiso que no sirva bien en ninguno. */
+.hero .eyebrow,
+.process .eyebrow,
+.footer .eyebrow,
+.booking .eyebrow {
   color: var(--sand);
+}
+
+/* Estos dos bloques tienen fondo ARENA, no petróleo: acá el arena sería arena
+   sobre arena. Va el petróleo, que sobre ese fondo da amplio contraste. */
+.quote-panel .eyebrow,
+.cta .eyebrow {
+  color: var(--petrol);
 }
 
 .process-head {
@@ -661,6 +679,12 @@ a {
   color: white;
 }
 
+/* El <small> del día conserva su propio color, así que al activarse el botón
+   quedaba gris sobre petróleo (2.3:1). Hereda el color del botón activo. */
+.date.active small {
+  color: inherit;
+}
+
 .date:disabled,
 .time:disabled {
   opacity: 0.35;
@@ -790,6 +814,13 @@ a {
   gap: 60px;
 }
 
+.footer-bottom span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* h2, no h4: el pie arrancaba en h4 sin h2 ni h3 previos y eso deja saltos en
+   el esquema de encabezados (I-A11Y-05). El tamaño lo sigue dando esta regla. */
+.footer h2,
 .footer h4 {
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -813,7 +844,8 @@ a {
   display: flex;
   justify-content: space-between;
   font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.4);
+  /* Estaba en 0.4, que sobre el petróleo del pie da 3.7:1 en texto de 11 px. */
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .whatsapp {

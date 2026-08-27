@@ -65,9 +65,17 @@ export function Dialogo({ abierto, onCerrar, titulaId, children }: Props) {
     // El resto de la página se vuelve inerte. Es la forma correcta de decir
     // "esto no existe mientras el diálogo está abierto": lo entienden tanto el
     // orden de tabulación como los lectores de pantalla.
-    const hermanos = Array.from(document.body.children).filter(
-      (hijo) => hijo !== panel.current?.parentElement,
-    ) as HTMLElement[];
+    //
+    // El criterio es «no contiene al diálogo», no «no es su padre». El diálogo
+    // se renderiza en el árbol donde está el componente, no en un portal al
+    // <body>, así que su ancestro ES uno de los hijos del body: compararlo con
+    // `panel.parentElement` no lo excluía y terminaba marcando inerte al propio
+    // diálogo. El resultado era que el foco no podía entrar — justo lo contrario
+    // de lo que este componente viene a arreglar.
+    const panelActual = panel.current;
+    const hermanos = (
+      Array.from(document.body.children) as HTMLElement[]
+    ).filter((hijo) => !(panelActual && hijo.contains(panelActual)));
     const inertesPrevios = hermanos.map((el) => el.inert);
     hermanos.forEach((el) => (el.inert = true));
 

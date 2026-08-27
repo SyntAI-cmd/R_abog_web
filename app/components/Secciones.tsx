@@ -53,7 +53,6 @@ const VALORES = [
   ["Compromiso real", "Trabajamos para proteger tus derechos."],
 ] as const;
 
-
 export function Hero() {
   return (
     <section className="hero" id="inicio">

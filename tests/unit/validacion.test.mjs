@@ -17,7 +17,11 @@ import {
   validarOpinion,
   validarSituacion,
 } from "../../lib/validacion.ts";
-import { autorizar, emailsAutorizados, respuestaDeAutorizacion } from "../../lib/autorizacion.ts";
+import {
+  autorizar,
+  emailsAutorizados,
+  respuestaDeAutorizacion,
+} from "../../lib/autorizacion.ts";
 
 test("limpiarTexto quita caracteres de control y normaliza espacios", () => {
   assert.equal(limpiarTexto("  hola   mundo  ", 100), "hola mundo");
@@ -31,7 +35,10 @@ test("limpiarTexto quita caracteres de control y normaliza espacios", () => {
 test("limpiarTexto no escapa HTML: eso es tarea del punto de salida", () => {
   // React escapa al renderizar. Guardar el texto ya escapado haría que en el
   // panel se leyera "&amp;" en lugar de "&".
-  assert.equal(limpiarTexto("Fernández & Asociados", 100), "Fernández & Asociados");
+  assert.equal(
+    limpiarTexto("Fernández & Asociados", 100),
+    "Fernández & Asociados",
+  );
   assert.equal(limpiarTexto("<b>hola</b>", 100), "<b>hola</b>");
 });
 
@@ -40,7 +47,11 @@ test("neutralizarFormula protege una exportación a planilla", () => {
   assert.equal(neutralizarFormula("+54 9 263"), "'+54 9 263");
   assert.equal(neutralizarFormula("-5"), "'-5");
   assert.equal(neutralizarFormula("@usuario"), "'@usuario");
-  assert.equal(neutralizarFormula("  =IMPORTXML(1)").charAt(0), "'", "no se evade con espacios");
+  assert.equal(
+    neutralizarFormula("  =IMPORTXML(1)").charAt(0),
+    "'",
+    "no se evade con espacios",
+  );
   assert.equal(neutralizarFormula("María Pérez"), "María Pérez");
 });
 
@@ -55,8 +66,22 @@ test("la calificación acepta el rango completo 1 a 5", () => {
 });
 
 test("la calificación rechaza lo que está fuera de rango o no es entero", () => {
-  for (const invalido of [0, 6, -1, 4.5, "cinco", null, undefined, NaN, Infinity]) {
-    assert.equal(validarCalificacion(invalido).ok, false, `${String(invalido)} no debe aceptarse`);
+  for (const invalido of [
+    0,
+    6,
+    -1,
+    4.5,
+    "cinco",
+    null,
+    undefined,
+    NaN,
+    Infinity,
+  ]) {
+    assert.equal(
+      validarCalificacion(invalido).ok,
+      false,
+      `${String(invalido)} no debe aceptarse`,
+    );
   }
 });
 
@@ -70,7 +95,11 @@ test("el nombre exige longitud mínima y al menos una letra", () => {
 
 test("la edad exige un entero de 18 a 110", () => {
   assert.equal(validarEdad(18).ok, true);
-  assert.equal(validarEdad("35").ok, true, "acepta el número como texto del formulario");
+  assert.equal(
+    validarEdad("35").ok,
+    true,
+    "acepta el número como texto del formulario",
+  );
   assert.equal(validarEdad(110).ok, true);
   assert.equal(validarEdad(17).ok, false);
   assert.equal(validarEdad(111).ok, false);
@@ -80,9 +109,16 @@ test("la edad exige un entero de 18 a 110", () => {
 
 test("la situación y la opinión exigen un mínimo de contenido", () => {
   assert.equal(validarSituacion("corto").ok, false);
-  assert.equal(validarSituacion("Tuve un accidente de tránsito el mes pasado.").ok, true);
+  assert.equal(
+    validarSituacion("Tuve un accidente de tránsito el mes pasado.").ok,
+    true,
+  );
   assert.equal(validarOpinion("Muy bien").ok, false);
-  assert.equal(validarOpinion("Me explicaron cada paso con mucha claridad y paciencia.").ok, true);
+  assert.equal(
+    validarOpinion("Me explicaron cada paso con mucha claridad y paciencia.")
+      .ok,
+    true,
+  );
   assert.equal(validarNombrePublico("A").ok, false);
   assert.equal(validarNombrePublico("M. A.").ok, true);
 });
@@ -104,7 +140,9 @@ test("sin ADMIN_EMAILS no hay ningún administrador", () => {
     assert.deepEqual(emailsAutorizados(), []);
 
     // El punto de la corrección: una configuración ausente NO concede acceso.
-    const resultado = autorizar({ email: "estudiojuridicofernandezrr@gmail.com" });
+    const resultado = autorizar({
+      email: "estudiojuridicofernandezrr@gmail.com",
+    });
     assert.equal(resultado.estado, "sin_configurar");
     assert.equal(respuestaDeAutorizacion(resultado).status, 503);
   } finally {
@@ -118,7 +156,10 @@ test("con ADMIN_EMAILS vacío tampoco hay administrador", () => {
   try {
     process.env.ADMIN_EMAILS = "   ,  ,";
     assert.deepEqual(emailsAutorizados(), []);
-    assert.equal(autorizar({ email: "quien@sea.com" }).estado, "sin_configurar");
+    assert.equal(
+      autorizar({ email: "quien@sea.com" }).estado,
+      "sin_configurar",
+    );
   } finally {
     if (previo === undefined) delete process.env.ADMIN_EMAILS;
     else process.env.ADMIN_EMAILS = previo;
@@ -129,9 +170,18 @@ test("la comparación de direcciones ignora mayúsculas y espacios", () => {
   const previo = process.env.ADMIN_EMAILS;
   try {
     process.env.ADMIN_EMAILS = " Admin@Estudio.com , otra@estudio.com ";
-    assert.deepEqual(emailsAutorizados(), ["admin@estudio.com", "otra@estudio.com"]);
-    assert.equal(autorizar({ email: "ADMIN@ESTUDIO.COM" }).estado, "autorizado");
-    assert.equal(autorizar({ email: " otra@estudio.com " }).estado, "autorizado");
+    assert.deepEqual(emailsAutorizados(), [
+      "admin@estudio.com",
+      "otra@estudio.com",
+    ]);
+    assert.equal(
+      autorizar({ email: "ADMIN@ESTUDIO.COM" }).estado,
+      "autorizado",
+    );
+    assert.equal(
+      autorizar({ email: " otra@estudio.com " }).estado,
+      "autorizado",
+    );
   } finally {
     if (previo === undefined) delete process.env.ADMIN_EMAILS;
     else process.env.ADMIN_EMAILS = previo;
@@ -143,14 +193,23 @@ test("cada desenlace tiene su código HTTP y ninguno filtra la lista", () => {
   try {
     process.env.ADMIN_EMAILS = "admin@estudio.com";
 
-    assert.equal(respuestaDeAutorizacion(autorizar(null)).status, 401, "sin sesión");
-    const prohibido = respuestaDeAutorizacion(autorizar({ email: "otro@ejemplo.com" }));
+    assert.equal(
+      respuestaDeAutorizacion(autorizar(null)).status,
+      401,
+      "sin sesión",
+    );
+    const prohibido = respuestaDeAutorizacion(
+      autorizar({ email: "otro@ejemplo.com" }),
+    );
     assert.equal(prohibido.status, 403);
     assert.ok(
       !prohibido.error.includes("admin@estudio.com"),
       "el mensaje no debe revelar quién sí está autorizado",
     );
-    assert.equal(respuestaDeAutorizacion(autorizar({ email: "admin@estudio.com" })).status, 200);
+    assert.equal(
+      respuestaDeAutorizacion(autorizar({ email: "admin@estudio.com" })).status,
+      200,
+    );
   } finally {
     if (previo === undefined) delete process.env.ADMIN_EMAILS;
     else process.env.ADMIN_EMAILS = previo;

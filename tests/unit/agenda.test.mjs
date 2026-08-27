@@ -40,31 +40,49 @@ test("rechaza formatos inválidos con 400", () => {
 });
 
 test("rechaza un horario que ya pasó", () => {
-  const resultado = validarVentana({ date: "2026-08-27", time: "09:00" }, AHORA);
+  const resultado = validarVentana(
+    { date: "2026-08-27", time: "09:00" },
+    AHORA,
+  );
   assert.equal(resultado?.motivo, "pasado");
   assert.equal(resultado?.codigo, 400);
 });
 
 test("rechaza un horario demasiado próximo", () => {
   // Falta media hora; el mínimo son 2.
-  const resultado = validarVentana({ date: "2026-08-27", time: "10:30" }, AHORA);
+  const resultado = validarVentana(
+    { date: "2026-08-27", time: "10:30" },
+    AHORA,
+  );
   assert.equal(resultado?.motivo, "muy_pronto");
   assert.equal(ANTICIPACION_MINIMA_MINUTOS, 120);
 });
 
 test("acepta justo en el límite de anticipación mínima", () => {
-  assert.equal(validarVentana({ date: "2026-08-27", time: "12:00" }, AHORA), null);
+  assert.equal(
+    validarVentana({ date: "2026-08-27", time: "12:00" }, AHORA),
+    null,
+  );
 });
 
 test("rechaza un horario más allá de la ventana máxima", () => {
-  const resultado = validarVentana({ date: "2027-08-27", time: "10:00" }, AHORA);
+  const resultado = validarVentana(
+    { date: "2027-08-27", time: "10:00" },
+    AHORA,
+  );
   assert.equal(resultado?.motivo, "muy_lejos");
   assert.equal(ANTICIPACION_MAXIMA_DIAS, 90);
 });
 
 test("acepta un horario válido dentro de la ventana", () => {
-  assert.equal(validarVentana({ date: "2026-08-28", time: "09:00" }, AHORA), null);
-  assert.equal(validarVentana({ date: "2026-11-20", time: "16:00" }, AHORA), null);
+  assert.equal(
+    validarVentana({ date: "2026-08-28", time: "09:00" }, AHORA),
+    null,
+  );
+  assert.equal(
+    validarVentana({ date: "2026-11-20", time: "16:00" }, AHORA),
+    null,
+  );
 });
 
 test("un horario ocupado deja de ofrecerse", () => {
@@ -135,10 +153,25 @@ test("agruparPorFecha arma los días que consume la interfaz", () => {
 });
 
 test("sólo se reconocen los estados definidos", () => {
-  for (const estado of ["pending", "confirmed", "rescheduled", "cancelled", "completed", "no_show"]) {
+  for (const estado of [
+    "pending",
+    "confirmed",
+    "rescheduled",
+    "cancelled",
+    "completed",
+    "no_show",
+  ]) {
     assert.ok(esEstado(estado), `${estado} debería ser válido`);
   }
-  for (const invalido of ["paid", "PENDING", "", null, undefined, 1, "'; DROP TABLE appointments;--"]) {
+  for (const invalido of [
+    "paid",
+    "PENDING",
+    "",
+    null,
+    undefined,
+    1,
+    "'; DROP TABLE appointments;--",
+  ]) {
     assert.ok(!esEstado(invalido), `${String(invalido)} no debería aceptarse`);
   }
 });

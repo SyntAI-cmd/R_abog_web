@@ -26,7 +26,11 @@ test("a las 21:00 de Argentina el día civil todavía no cambió", () => {
     "2026-08-28",
     "así se veía con el cálculo viejo: ya es el día siguiente",
   );
-  assert.equal(fechaCivilDe(instante), "2026-08-27", "en Mendoza todavía es el 27");
+  assert.equal(
+    fechaCivilDe(instante),
+    "2026-08-27",
+    "en Mendoza todavía es el 27",
+  );
 });
 
 test("a las 23:59 de Argentina el día civil sigue siendo el mismo", () => {
@@ -43,7 +47,11 @@ test("el borde de mes y de año se resuelve con la hora local, no con UTC", () =
   // 31/12/2026 22:00 en Argentina = 01/01/2027 01:00 UTC.
   const finDeAnio = new Date("2027-01-01T01:00:00Z");
   assert.equal(finDeAnio.toISOString().slice(0, 10), "2027-01-01");
-  assert.equal(fechaCivilDe(finDeAnio), "2026-12-31", "en Argentina todavía es 2026");
+  assert.equal(
+    fechaCivilDe(finDeAnio),
+    "2026-12-31",
+    "en Argentina todavía es 2026",
+  );
 
   // 31/08 22:00 local = 01/09 01:00 UTC.
   const finDeMes = new Date("2026-09-01T01:00:00Z");
@@ -52,9 +60,18 @@ test("el borde de mes y de año se resuelve con la hora local, no con UTC", () =
 
 test("instanteDe convierte una fecha y hora civiles al instante correcto", () => {
   // Argentina está en UTC-3 todo el año desde 2009.
-  assert.equal(instanteDe("2026-08-27", "10:00").toISOString(), "2026-08-27T13:00:00.000Z");
-  assert.equal(instanteDe("2026-01-15", "00:00").toISOString(), "2026-01-15T03:00:00.000Z");
-  assert.equal(instanteDe("2026-12-31", "23:30").toISOString(), "2027-01-01T02:30:00.000Z");
+  assert.equal(
+    instanteDe("2026-08-27", "10:00").toISOString(),
+    "2026-08-27T13:00:00.000Z",
+  );
+  assert.equal(
+    instanteDe("2026-01-15", "00:00").toISOString(),
+    "2026-01-15T03:00:00.000Z",
+  );
+  assert.equal(
+    instanteDe("2026-12-31", "23:30").toISOString(),
+    "2027-01-01T02:30:00.000Z",
+  );
 });
 
 test("instanteDe y fechaCivilDe son consistentes entre sí", () => {
@@ -91,7 +108,11 @@ test("diaDeLaSemana usa el calendario, no la zona del servidor", () => {
 
 test("partesParaMostrar describe la fecha recibida, sin correrla", () => {
   const partes = partesParaMostrar("2026-08-27");
-  assert.equal(partes.numero, 27, "el número del día tiene que ser el de la fecha pedida");
+  assert.equal(
+    partes.numero,
+    27,
+    "el número del día tiene que ser el de la fecha pedida",
+  );
   assert.ok(partes.dia.length > 0);
   assert.ok(partes.mes.length > 0);
   assert.ok(partes.completa.includes("27"));
