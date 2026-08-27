@@ -41,3 +41,6 @@ yarn-error.log*
 
 # Artefactos de build local de vinext/wrangler
 *.tsbuildinfo
+
+# Masters de imagen sin optimizar
+media-fuente/

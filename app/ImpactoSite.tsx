@@ -1,50 +1,67 @@
-"use client";
+import { Navegacion } from "./components/Navegacion";
+import { Opiniones } from "./components/Opiniones";
+import { Turnero } from "./components/Turnero";
+import { Preguntas } from "./components/Preguntas";
+import {
+  Areas,
+  Diferencia,
+  Estudio,
+  Hero,
+  LlamadoFinal,
+  Metodo,
+  PieDePagina,
+} from "./components/Secciones";
+import { whatsapp } from "../lib/contacto";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
-
-const whatsapp = (text: string) => `https://wa.me/542634210691?text=${encodeURIComponent(text)}`;
-const practices = [
-  ["01", "Accidentes de tránsito", "Reclamos por daños personales y materiales. Analizamos lo ocurrido, reunimos la documentación y defendemos un resarcimiento justo."],
-  ["02", "Accidentes laborales · ART", "Acompañamiento frente a accidentes o enfermedades laborales, desde la denuncia hasta las instancias médicas y legales."],
-  ["03", "Derecho laboral", "Asesoramiento claro ante despidos, diferencias salariales, registración deficiente y otros conflictos del trabajo."],
-];
-const steps = ["Escuchamos tu caso", "Evaluamos tu situación", "Te asesoramos con claridad", "Diseñamos la estrategia", "Acompañamos el proceso", "Defendemos tus derechos"];
-const faqs = [
-  ["¿Qué tipo de casos atiende el estudio?", "Trabajamos principalmente en accidentes de tránsito, accidentes laborales y reclamos ante ART, y conflictos de derecho laboral."],
-  ["¿Cómo solicito una consulta?", "Podés elegir un día y horario en el turnero. La solicitud queda pendiente hasta que el estudio la confirme."],
-  ["¿Puedo consultar por WhatsApp?", "Sí. El botón de WhatsApp abre un mensaje directo para que nos cuentes brevemente tu situación."],
-  ["¿Qué necesito para la primera consulta?", "Traé o tené a mano toda la documentación vinculada con el hecho. Si todavía no la reuniste, te indicaremos por dónde empezar."],
-  ["¿Atienden en toda Mendoza?", "Sí. El estudio se encuentra en Mendoza y evalúa consultas de distintos puntos de la provincia."],
-];
-const seedReviews = [
-  ["M. A.", "Me explicaron cada paso con paciencia. Sentí que mi caso era escuchado y pude tomar decisiones con tranquilidad."],
-  ["L. R.", "Destaco la claridad y el seguimiento. Siempre supe en qué instancia estaba el reclamo."],
-  ["C. G.", "Un trato muy humano en un momento difícil. Profesionales, claros y comprometidos."],
-  ["V. P.", "Respondieron mis dudas y ordenaron toda la documentación. La atención fue excelente."],
-];
-
+/**
+ * Composición de la página principal.
+ *
+ * Antes esto era un solo archivo de 50 líneas físicas con líneas de más de
+ * 3.000 caracteres, donde convivían todas las secciones, el turnero, las
+ * reseñas, el modal y el pie (I-TECH-03). Ahora cada parte vive en su archivo,
+ * se puede leer sin desplazamiento horizontal y se puede probar por separado.
+ *
+ * Sólo son componentes de cliente los tres que necesitan interacción:
+ * navegación, opiniones y turnero. El resto se renderiza en el servidor y no
+ * viaja como JavaScript.
+ */
 export function ImpactoSite() {
-  const [faq, setFaq] = useState(0); const [reviewOpen, setReviewOpen] = useState(false); const [status, setStatus] = useState(""); const [reviewStatus, setReviewStatus] = useState(""); const [reviews, setReviews] = useState(seedReviews);
-  useEffect(() => { fetch('/api/reviews').then(r => r.json()).then(data => { if (Array.isArray(data.reviews) && data.reviews.length) setReviews(data.reviews.map((x: { display_name: string; content: string }) => [x.display_name, x.content])) }).catch(() => { }) }, []);
-  const dates = useMemo(() => Array.from({ length: 10 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() + i + 1); while (d.getDay() === 0 || d.getDay() === 6) d.setDate(d.getDate() + 1); return d; }).filter((d, i, a) => a.findIndex(x => x.toDateString() === d.toDateString()) === i).slice(0, 7), []);
-  const [date, setDate] = useState(dates[0]?.toISOString().slice(0, 10) ?? ""); const [time, setTime] = useState("10:00");
-  async function book(e: FormEvent<HTMLFormElement>) { e.preventDefault(); setStatus("Enviando solicitud…"); const form = new FormData(e.currentTarget); const payload = Object.fromEntries(form); try { const res = await fetch("/api/appointments", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...payload, date, time }) }); const data = await res.json(); if (!res.ok) throw new Error(data.error); setStatus("Recibimos tu solicitud. El estudio se comunicará para confirmarla."); e.currentTarget.reset(); } catch (err) { setStatus(err instanceof Error ? err.message : "No pudimos enviar la solicitud."); } }
-  async function review(e: FormEvent<HTMLFormElement>) { e.preventDefault(); setReviewStatus("Enviando…"); const payload = Object.fromEntries(new FormData(e.currentTarget)); try { const res = await fetch("/api/reviews", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) }); const data = await res.json(); if (!res.ok) throw new Error(data.error); setReviewStatus("Gracias. La opinión quedó pendiente de moderación."); e.currentTarget.reset(); } catch (err) { setReviewStatus(err instanceof Error ? err.message : "No pudimos enviarla.") } }
-  return <>
-    <nav className="nav"><div className="container nav-in"><a className="brand" href="#inicio"><span className="brand-mark"><span>I</span></span><span><span className="brand-name">IMPACTO</span><span className="brand-sub">ESTUDIO JURÍDICO</span></span></a><div className="nav-links"><a href="#estudio">El estudio</a><a href="#areas">Áreas</a><a href="#metodo">Cómo trabajamos</a><a href="#faq">Preguntas</a></div><a className="btn btn-primary" href="#turnos">Reservar turno <span>↗</span></a><button className="menu-btn" aria-label="Ir a reservar turno" onClick={() => document.querySelector("#turnos")?.scrollIntoView()}>☰</button></div></nav>
-    <main>
-      <section className="hero" id="inicio"><div className="container hero-content"><div className="hero-grid"><div><span className="eyebrow">Mendoza · Argentina</span><h1 className="display">Después del <em>impacto,</em><br />defendemos tus derechos.</h1></div><div className="hero-side"><p>Te acompañamos con claridad y estrategia ante accidentes de tránsito, reclamos laborales y ART.</p><div className="hero-actions"><a className="btn btn-primary" href="#turnos">Solicitar consulta</a><a className="btn btn-outline" target="_blank" rel="noreferrer" href={whatsapp("Hola, quiero realizar una consulta con IMPACTO Estudio Jurídico.")}>WhatsApp</a></div></div></div></div><div className="hero-proof"><div className="container proof-in"><span>Asesoramiento personalizado</span><span>Comunicación clara</span><span>Defensa profesional</span><span>Resarcimiento justo</span></div></div></section>
-      <section className="section" id="estudio"><div className="container intro-grid"><div><span className="eyebrow">Nuestra forma de ejercer</span><div className="number">01</div></div><div><h2 className="display statement">No sos un expediente.<br /><span>Sos una persona que necesita respuestas.</span></h2><div className="intro-copy"><p className="lead">En IMPACTO acompañamos a personas que atraviesan las consecuencias de un accidente o un conflicto laboral. Escuchamos, explicamos y construimos una estrategia adecuada para cada situación.</p><p className="lead">Trabajamos con una mirada profesional y humana: para que comprendas tus derechos, sepas qué esperar y cuentes con respaldo durante todo el proceso.</p></div></div></div></section>
-      <section className="section practices" id="areas"><div className="container"><span className="eyebrow">Áreas de práctica</span><h2 className="display section-title">Experiencia enfocada donde más la necesitás.</h2><div className="cards">{practices.map(([n, t, d]) => <article className="card" key={n}><span className="card-num">{n}</span><h3 className="display">{t}</h3><p>{d}</p><span className="card-arrow">↗</span></article>)}</div></div></section>
-      <section className="section process" id="metodo"><div className="container"><div className="process-head"><div><span className="eyebrow">Un proceso claro</span><h2 className="display section-title">Del impacto<br />al resarcimiento.</h2></div><p className="lead">Cada etapa tiene un propósito. Te mantenemos al tanto, sin tecnicismos innecesarios y con una estrategia que responde a tu caso.</p></div><div className="steps">{steps.map((s, i) => <div className="step" key={s}><b>0{i + 1}</b><span>{s}</span></div>)}</div></div></section>
-      <section className="section"><div className="container difference-grid"><div className="quote-panel"><span className="eyebrow">Nuestro compromiso</span><blockquote>La confianza se construye con presencia, claridad y resultados.</blockquote><span>IMPACTO · Estudio Jurídico</span></div><div><span className="eyebrow">Por qué elegirnos</span><h2 className="display section-title">Una defensa firme.<br />Un trato cercano.</h2><div className="values">{[["Atención personalizada", "Cada historia y cada caso merecen una mirada propia."], ["Comunicación clara", "Te explicamos opciones, riesgos y próximos pasos."], ["Estrategia legal", "Tomamos decisiones con criterio y fundamento."], ["Transparencia", "Información directa durante todo el proceso."], ["Acompañamiento", "No atravesás solo una situación compleja."], ["Compromiso real", "Trabajamos para proteger tus derechos."]].map(([a, b]) => <div className="value" key={a}><b>{a}</b><p>{b}</p></div>)}</div></div></div></section>
-      <section className="section reviews"><div className="container"><span className="eyebrow">Experiencias</span><h2 className="display section-title">La confianza de quienes<br />acompañamos.</h2></div><div className="marquee">{[...reviews, ...reviews].map(([name, text], i) => <article className="review" key={i}><span className="stars">★★★★★</span><p>“{text}”</p><footer><span>{name}</span><span>Opinión moderada</span></footer></article>)}</div><div className="container review-form"><button className="link-btn" onClick={() => setReviewOpen(true)}>Compartir mi experiencia →</button><p className="lead" style={{ fontSize: '.72rem' }}>Todas las opiniones se revisan antes de publicarse y nunca exponen datos del caso.</p></div></section>
-      <section className="section booking" id="turnos"><div className="container booking-shell"><div className="booking-info"><span className="eyebrow">Reservá una consulta</span><h2 className="display">El primer paso puede ser simple.</h2><p>Elegí un horario disponible y contanos brevemente tu situación. La solicitud será revisada y confirmada por el estudio.</p><p className="privacy-note">Tus datos se usan únicamente para gestionar la consulta. No incluyas información médica ni documentación sensible en este formulario.</p></div><form className="booking-form" onSubmit={book}><div className="month-head"><b>Elegí una fecha</b><span>Próximos días hábiles</span></div><div className="dates">{dates.map(d => { const iso = d.toISOString().slice(0, 10); return <button type="button" className={`date ${date === iso ? 'active' : ''}`} key={iso} onClick={() => setDate(iso)}><small>{d.toLocaleDateString('es-AR', { weekday: 'short' })}</small>{d.getDate()} {d.toLocaleDateString('es-AR', { month: 'short' })}</button> })}</div><div className="times">{["09:00", "10:00", "11:30", "15:00", "16:30"].map(t => <button type="button" className={`time ${time === t ? 'active' : ''}`} key={t} onClick={() => setTime(t)}>{t}</button>)}</div><div className="fields"><div className="field"><label htmlFor="name">Nombre y apellido</label><input id="name" name="name" minLength={3} maxLength={80} required autoComplete="name" /></div><div className="field"><label htmlFor="age">Edad</label><input id="age" name="age" type="number" min="18" max="110" required /></div><div className="field full"><label htmlFor="situation">¿Por qué querés consultarnos?</label><textarea id="situation" name="situation" minLength={15} maxLength={700} required placeholder="Contanos lo esencial, sin incluir datos sensibles." /></div></div><button className="btn btn-dark" type="submit" style={{ marginTop: 20 }}>Solicitar turno ↗</button>{status && <div className="status" role="status">{status}</div>}</form></div></section>
-      <section className="section" id="faq"><div className="container faq-grid"><div><span className="eyebrow">Preguntas frecuentes</span><h2 className="display section-title">Antes de dar el primer paso.</h2></div><div>{faqs.map(([q, a], i) => <div className="faq-item" key={q}><button onClick={() => setFaq(faq === i ? -1 : i)} aria-expanded={faq === i}><b>{q}</b><span>{faq === i ? '−' : '+'}</span></button>{faq === i && <p>{a}</p>}</div>)}</div></div></section>
-      <section className="section cta"><div className="container"><span className="eyebrow">Estamos para escucharte</span><h2 className="display">Tu situación merece claridad y defensa.</h2><div className="cta-actions"><a className="btn btn-dark" href="#turnos">Solicitar consulta</a><a className="btn" style={{ borderColor: 'var(--petrol)' }} target="_blank" rel="noreferrer" href={whatsapp("Hola, quiero solicitar un turno con IMPACTO Estudio Jurídico.")}>Hablar por WhatsApp</a></div></div></section>
-    </main>
-    <footer className="footer"><div className="container"><div className="footer-grid"><div><a className="brand" href="#inicio"><span className="brand-mark"><span>I</span></span><span><span className="brand-name">IMPACTO</span><span className="brand-sub">ESTUDIO JURÍDICO</span></span></a><p style={{ marginTop: 25, maxWidth: 350 }}>Acompañamiento legal profesional, humano y estratégico en Mendoza, Argentina.</p></div><div><h4>Contacto</h4><a href="mailto:estudiojuridicofernandezrr@gmail.com">estudiojuridicofernandezrr@gmail.com</a><a href="tel:+542634210691">263 421 0691</a><a href="tel:+542634759950">263 475 9950</a><p>Mendoza, Argentina</p></div><div><h4>Información</h4><a href="#areas">Áreas de práctica</a><a href="#turnos">Reservar turno</a><a href="#faq">Preguntas frecuentes</a><a href="/privacidad">Privacidad</a><a href="/admin">Acceso administración</a></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} IMPACTO Estudio Jurídico.</span><span>La información del sitio no reemplaza asesoramiento legal.</span></div></div></footer>
-    <a className="whatsapp" aria-label="Contactar por WhatsApp" target="_blank" rel="noreferrer" href={whatsapp("Hola, quiero realizar una consulta con IMPACTO Estudio Jurídico.")}>WA</a>
-    {reviewOpen && <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Compartir experiencia"><form className="modal" onSubmit={review}><button type="button" className="modal-close" onClick={() => setReviewOpen(false)} aria-label="Cerrar">×</button><span className="eyebrow">Tu opinión</span><h2 className="display" style={{ fontSize: '2.8rem' }}>Ayudanos a seguir mejorando.</h2><div className="fields"><div className="field"><label>Nombre o iniciales</label><input name="displayName" required maxLength={50} /></div><div className="field"><label>Calificación</label><select name="rating" defaultValue="5"><option value="5">5 estrellas</option><option value="4">4 estrellas</option><option value="3">3 estrellas</option></select></div><div className="field full"><label>Tu experiencia</label><textarea name="content" required minLength={25} maxLength={600} /></div></div><button className="btn btn-dark" style={{ marginTop: 18 }}>Enviar para revisión</button>{reviewStatus && <div className="status" role="status">{reviewStatus}</div>}</form></div>}
-  </>;
+  return (
+    <>
+      {/* Primer elemento enfocable de la página: quien navega con teclado o
+          lector de pantalla puede saltarse la navegación en lugar de recorrerla
+          en cada carga. */}
+      <a className="saltar-al-contenido" href="#inicio">
+        Ir al contenido principal
+      </a>
+
+      <Navegacion />
+
+      <main>
+        <Hero />
+        <Estudio />
+        <Areas />
+        <Metodo />
+        <Diferencia />
+        <Opiniones />
+        <Turnero />
+        <Preguntas />
+        <LlamadoFinal />
+      </main>
+
+      <PieDePagina />
+
+      <a
+        className="whatsapp"
+        aria-label="Contactar por WhatsApp"
+        target="_blank"
+        rel="noreferrer noopener"
+        href={whatsapp(
+          "Hola, quiero realizar una consulta con IMPACTO Estudio Jurídico.",
+        )}
+      >
+        <span aria-hidden="true">WA</span>
+      </a>
+    </>
+  );
 }

@@ -15,6 +15,13 @@
       "when": 1786128028243,
       "tag": "0001_brainy_vargas",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1787000000000,
+      "tag": "0002_agenda_server_authoritative",
+      "breakpoints": true
     }
   ]
 }

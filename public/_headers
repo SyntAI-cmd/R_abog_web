@@ -1,0 +1,42 @@
+# Cabeceras HTTP.
+#
+# Formato de Cloudflare Pages. El sitio se sirve desde un Worker de Cloudflare a
+# traves de OpenAI Sites, asi que este archivo aplica; si el hosting cambiara,
+# hay que traducirlo a su mecanismo.
+#
+# No se pueden verificar desde un build local: las sirve el hosting. Quedan por
+# comprobar contra la produccion real (I-SEC-04).
+
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+
+  # CSP. El sitio no carga scripts de terceros ni incrusta nada externo, asi que
+  # todo puede quedar en 'self'.
+  #
+  # 'unsafe-inline' en script-src es, hoy, inevitable: React inyecta el payload
+  # de hidratacion como script en linea y vinext no expone un nonce por peticion.
+  # Queda documentado como excepcion consciente. La superficie real es acotada:
+  # ningun texto que escriba un visitante se renderiza como HTML -- React escapa
+  # todo -- y el unico dangerouslySetInnerHTML del proyecto serializa un objeto
+  # propio (el JSON-LD), no entrada de usuario.
+  #
+  # 'unsafe-inline' en style-src es por la misma razon: estilos en linea de React.
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; upgrade-insecure-requests
+
+# El panel de administracion nunca se cachea ni se indexa.
+/admin
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/api/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+# Recursos con hash en el nombre: inmutables.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable

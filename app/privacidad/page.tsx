@@ -1,1 +1,126 @@
-export default function Privacy(){return <main className="container section"><a href="/">← Volver</a><h1 className="display section-title">Privacidad y protección de datos</h1><p className="lead">IMPACTO Estudio Jurídico utiliza los datos enviados exclusivamente para responder consultas, gestionar turnos y prestar asesoramiento. No vendemos ni compartimos información con fines publicitarios.</p><h2>Datos del turnero</h2><p className="lead">Solicitamos nombre, edad y una descripción breve. Evitá incluir información médica, números de documento u otros datos sensibles. El acceso administrativo está restringido y los registros se conservan solo durante el tiempo necesario.</p><h2>Opiniones</h2><p className="lead">Las reseñas son moderadas antes de publicarse y se muestran con nombre abreviado o iniciales. Nunca se publica información del caso.</p><h2>Contacto</h2><p className="lead">Podés solicitar acceso, corrección o eliminación escribiendo a estudiojuridicofernandezrr@gmail.com.</p></main>}
+import Link from "next/link";
+import type { Metadata } from "next";
+
+/**
+ * Página de privacidad.
+ *
+ * Sólo afirma cosas verificables desde el propio código: qué campos se piden,
+ * dónde quedan, quién los ve y qué NO hace el sitio. Los plazos de conservación
+ * y el circuito de borrado son decisiones del estudio y no están acá: escribir
+ * «se conservan 24 meses» sin que nadie lo haya definido sería inventar una
+ * política. Ver `docs/privacidad-pendiente.md` (I-CONT-02).
+ */
+export const metadata: Metadata = {
+  title: "Privacidad y protección de datos",
+  description:
+    "Qué datos recoge el sitio de IMPACTO Estudio Jurídico, para qué se usan, dónde quedan y cómo pedir su acceso, corrección o eliminación.",
+};
+
+export default function Privacidad() {
+  return (
+    <main className="container section pagina-legal">
+      <Link href="/">← Volver al inicio</Link>
+
+      <h1 className="display section-title">
+        Privacidad y protección de datos
+      </h1>
+
+      <p className="lead">
+        Esta página describe qué datos recoge este sitio web, con qué finalidad
+        y dónde quedan guardados. Sólo describe el funcionamiento del sitio: la
+        relación profesional con el estudio se rige por sus propios acuerdos.
+      </p>
+
+      <h2>Qué datos se recogen</h2>
+
+      <h3>Solicitud de turno</h3>
+      <p className="lead">
+        El formulario del turnero pide <strong>nombre y apellido</strong>,{" "}
+        <strong>edad</strong> y una{" "}
+        <strong>descripción breve de tu situación</strong>, junto con el día y
+        el horario elegidos. Se usan únicamente para gestionar esa consulta y
+        comunicarnos con vos.
+      </p>
+      <p className="lead">
+        Te pedimos que{" "}
+        <strong>
+          no incluyas información médica, números de documento ni datos de
+          terceros
+        </strong>{" "}
+        en ese campo: para eso está la consulta, no el formulario.
+      </p>
+
+      <h3>Opiniones</h3>
+      <p className="lead">
+        Si compartís una experiencia, se guardan el{" "}
+        <strong>nombre o las iniciales</strong> que indiques, la{" "}
+        <strong>calificación</strong> y el <strong>texto</strong>. Al enviarla
+        marcás una casilla que autoriza su publicación, y ese consentimiento
+        queda registrado con la opinión.
+      </p>
+
+      <h2>Cómo se moderan las opiniones</h2>
+      <p className="lead">
+        Ninguna opinión se publica automáticamente. Todas quedan pendientes de
+        revisión y se publican{" "}
+        <strong>con la calificación que puso quien la escribió</strong>, sea
+        alta o baja. Se rechazan las que exponen datos del caso, información de
+        terceros o contenido que no corresponde a una experiencia real con el
+        estudio; no se rechazan por ser críticas.
+      </p>
+      <p className="lead">
+        Podés pedir que retiremos tu opinión en cualquier momento escribiendo a
+        la dirección de contacto.
+      </p>
+
+      <h2>Qué hace y qué no hace este sitio</h2>
+      <ul className="lista-legal">
+        <li>
+          <strong>No hay analítica ni publicidad.</strong> El sitio no usa
+          Google Analytics ni ningún otro sistema de medición, y no tiene
+          píxeles ni etiquetas publicitarias.
+        </li>
+        <li>
+          <strong>No escribe cookies</strong> para visitantes. El único uso de
+          cookies es la sesión de quien administra el sitio, que necesita
+          iniciar sesión para entrar al panel.
+        </li>
+        <li>
+          <strong>No se comparten los datos con terceros</strong> con fines
+          comerciales ni publicitarios.
+        </li>
+        <li>
+          <strong>El acceso al panel está restringido</strong> a las cuentas
+          expresamente autorizadas.
+        </li>
+      </ul>
+
+      <h2>Conservación de los datos</h2>
+      <p className="lead">
+        Las solicitudes de turno y las opiniones se conservan mientras sean
+        necesarias para la finalidad por la que se enviaron. El plazo concreto
+        de conservación y el circuito de eliminación están siendo definidos por
+        el estudio; hasta que se publiquen acá, podés pedir la eliminación de
+        tus datos en cualquier momento por el canal de contacto y se atenderá el
+        pedido.
+      </p>
+
+      <h2>Tus derechos</h2>
+      <p className="lead">
+        Podés solicitar el acceso, la corrección o la eliminación de tus datos
+        escribiendo a{" "}
+        <a href="mailto:estudiojuridicofernandezrr@gmail.com">
+          estudiojuridicofernandezrr@gmail.com
+        </a>
+        . Indicá desde qué dirección o con qué nombre enviaste la consulta para
+        poder localizarla.
+      </p>
+
+      <h2>Cambios</h2>
+      <p className="lead">
+        Si cambia la forma en que el sitio trata los datos, esta página se
+        actualiza. Los cambios relevantes se reflejan acá antes de aplicarse.
+      </p>
+    </main>
+  );
+}
