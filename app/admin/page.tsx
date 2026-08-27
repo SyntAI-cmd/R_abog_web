@@ -1,0 +1,5 @@
+import { requireChatGPTUser, chatGPTSignOutPath } from "../chatgpt-auth";
+import { ensureSchema, getD1 } from "../../db/runtime";
+import { AdminPanel } from "./AdminPanel";
+export const dynamic="force-dynamic";
+export default async function AdminPage(){const user=await requireChatGPTUser("/admin");const allowed=(process.env.ADMIN_EMAILS||"estudiojuridicofernandezrr@gmail.com").toLowerCase().split(",").map(x=>x.trim());if(!allowed.includes(user.email.toLowerCase()))return <main style={{padding:40,fontFamily:'sans-serif'}}><h1>Acceso restringido</h1><p>La cuenta {user.email} no está autorizada para administrar este sitio.</p><a href={chatGPTSignOutPath("/")}>Cerrar sesión</a></main>;await ensureSchema();const appointments=await getD1().prepare("SELECT * FROM appointments ORDER BY date ASC,time ASC").all();const reviews=await getD1().prepare("SELECT * FROM reviews ORDER BY created_at DESC").all();const availability=await getD1().prepare("SELECT * FROM availability WHERE enabled=0 ORDER BY date,time").all();return <AdminPanel user={user.email} initialAppointments={appointments.results} initialReviews={reviews.results} initialAvailability={availability.results}/>}
