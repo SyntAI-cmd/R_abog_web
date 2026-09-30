@@ -3,6 +3,7 @@ import { esEstado } from "../../../../lib/agenda";
 import { exigirAdmin } from "../../../../lib/admin";
 import { leerJSON, limpiarTexto } from "../../../../lib/validacion";
 import { ahoraISO, getD1 } from "../../../../db";
+import { agendaLocalActiva } from "../../../../lib/turnero-config";
 
 /**
  * Gestión de turnos desde el panel.
@@ -16,6 +17,7 @@ export const dynamic = "force-dynamic";
 export async function PATCH(request: Request) {
   const rechazo = await exigirAdmin();
   if (rechazo) return rechazo;
+  if (!agendaLocalActiva()) return NextResponse.json({ error: "La agenda local es historial de solo lectura. Gestioná las nuevas reservas en Cal.com." }, { status: 409 });
 
   const cuerpo = await leerJSON(request);
   if (!cuerpo)

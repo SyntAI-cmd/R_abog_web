@@ -14,6 +14,7 @@ import {
   validarSituacion,
 } from "../../../lib/validacion";
 import { ahoraISO, getD1, hayBase } from "../../../db";
+import { agendaLocalActiva } from "../../../lib/turnero-config";
 
 /**
  * Solicitud de turno.
@@ -40,6 +41,9 @@ const MAXIMO_POR_VENTANA = 5;
 const VENTANA_SEGUNDOS = 3600;
 
 export async function POST(request: Request) {
+  if (!agendaLocalActiva()) {
+    return NextResponse.json({ error: "La agenda se trasladó a Cal.com. Abrí el calendario vigente desde la página o coordiná por WhatsApp." }, { status: 410 });
+  }
   if (!hayBase()) {
     return NextResponse.json(
       {

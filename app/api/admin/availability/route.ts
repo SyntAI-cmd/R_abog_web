@@ -3,6 +3,7 @@ import { exigirAdmin } from "../../../../lib/admin";
 import { esFechaCivil, esHoraCivil } from "../../../../lib/fecha";
 import { leerJSON, limpiarTexto } from "../../../../lib/validacion";
 import { ahoraISO, getD1 } from "../../../../db";
+import { agendaLocalActiva } from "../../../../lib/turnero-config";
 
 /**
  * Carga y baja de horarios ofrecidos.
@@ -50,6 +51,7 @@ export async function GET() {
 export async function POST(request: Request) {
   const rechazo = await exigirAdmin();
   if (rechazo) return rechazo;
+  if (!agendaLocalActiva()) return NextResponse.json({ error: "La disponibilidad vigente se administra en Cal.com." }, { status: 409 });
 
   const cuerpo = await leerJSON(request);
   if (!cuerpo)
@@ -89,6 +91,7 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
   const rechazo = await exigirAdmin();
   if (rechazo) return rechazo;
+  if (!agendaLocalActiva()) return NextResponse.json({ error: "La disponibilidad vigente se administra en Cal.com." }, { status: 409 });
 
   const cuerpo = await leerJSON(request);
   if (!cuerpo)

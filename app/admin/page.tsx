@@ -7,6 +7,7 @@ import { autorizar } from "../../lib/autorizacion";
 import { getD1, hayBase } from "../../db";
 import { AdminPanel } from "./AdminPanel";
 import { redirect } from "next/navigation";
+import { CAL_PANEL_URL, PROVEEDOR_TURNOS } from "../../lib/turnero-config";
 
 /**
  * Panel de administración.
@@ -111,6 +112,8 @@ export default async function AdminPage() {
       turnosIniciales={turnos.results ?? []}
       opinionesIniciales={opiniones.results ?? []}
       horariosIniciales={horarios.results ?? []}
+      proveedorTurnos={PROVEEDOR_TURNOS}
+      calPanelUrl={CAL_PANEL_URL}
     />
   );
 }

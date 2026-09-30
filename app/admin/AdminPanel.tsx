@@ -41,6 +41,8 @@ type Props = {
   turnosIniciales: Fila[];
   opinionesIniciales: Fila[];
   horariosIniciales: Fila[];
+  proveedorTurnos: "local" | "cal" | "pausado";
+  calPanelUrl: string;
 };
 
 const ESTADOS_TURNO = [
@@ -67,6 +69,8 @@ export function AdminPanel({
   turnosIniciales,
   opinionesIniciales,
   horariosIniciales,
+  proveedorTurnos,
+  calPanelUrl,
 }: Props) {
   const [turnos, setTurnos] = useState(turnosIniciales);
   const [opiniones, setOpiniones] = useState(opinionesIniciales);
@@ -251,13 +255,14 @@ export function AdminPanel({
 
       <section className="admin-seccion" aria-labelledby="h-agenda">
         <h2 id="h-agenda">Agenda</h2>
+        {proveedorTurnos !== "local" && <div className="admin-migracion"><strong>Nuevas reservas: {proveedorTurnos === "cal" ? "Cal.com" : "agenda pausada"}</strong><p>Los registros que siguen debajo son historial anterior y permanecen en modo de solo lectura.</p><a className="btn btn-dark" href={calPanelUrl} target="_blank" rel="noreferrer noopener">Gestionar agenda en Cal.com</a></div>}
         <p className="admin-nota">
           Un horario existe sólo si está cargado acá. Si la lista está vacía, el
           sitio informa que no hay turnos disponibles: nunca ofrece horarios que
           el estudio no habilitó.
         </p>
 
-        <form className="admin-form-horario" onSubmit={agregarHorario}>
+        {proveedorTurnos === "local" && <form className="admin-form-horario" onSubmit={agregarHorario}>
           <div className="admin-campo">
             <label htmlFor="nuevo-horario-fecha">Fecha</label>
             <input id="nuevo-horario-fecha" name="date" type="date" required />
@@ -275,7 +280,7 @@ export function AdminPanel({
           <button className="btn btn-dark" type="submit">
             Agregar horario
           </button>
-        </form>
+        </form>}
         <AvisoOperacion aviso={avisos["nuevo-horario"]} />
 
         {horarios.length === 0 ? (

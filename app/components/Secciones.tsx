@@ -13,6 +13,9 @@
  * ninguna parte se podía probar por separado.
  */
 import { whatsapp } from "../../lib/contacto";
+import { Marca } from "./Marca";
+import { BotonTurno } from "./BotonTurno";
+import { PROVEEDOR_TURNOS } from "../../lib/turnero-config";
 
 const AREAS = [
   [
@@ -72,9 +75,7 @@ export function Hero() {
               tránsito, reclamos laborales y ART.
             </p>
             <div className="hero-actions">
-              <a className="btn btn-primary" href="#turnos">
-                Solicitar consulta
-              </a>
+              <BotonTurno className="btn btn-primary" calActivo={PROVEEDOR_TURNOS === "cal"} />
               <a
                 className="btn btn-outline"
                 target="_blank"
@@ -83,7 +84,7 @@ export function Hero() {
                   "Hola, quiero realizar una consulta con IMPACTO Estudio Jurídico.",
                 )}
               >
-                WhatsApp
+                <img className="icono-whatsapp-inline" src="/whatsapp.svg" alt="" /> Contactar por WhatsApp
               </a>
             </div>
           </div>
@@ -236,9 +237,7 @@ export function LlamadoFinal() {
           Tu situación merece claridad y defensa.
         </h2>
         <div className="cta-actions">
-          <a className="btn btn-dark" href="#turnos">
-            Solicitar consulta
-          </a>
+          <BotonTurno className="btn btn-dark" calActivo={PROVEEDOR_TURNOS === "cal"} />
           <a
             className="btn"
             style={{ borderColor: "var(--petrol)" }}
@@ -248,7 +247,7 @@ export function LlamadoFinal() {
               "Hola, quiero solicitar un turno con IMPACTO Estudio Jurídico.",
             )}
           >
-            Hablar por WhatsApp
+            <img className="icono-whatsapp-inline" src="/whatsapp.svg" alt="" /> Hablar por WhatsApp
           </a>
         </div>
       </div>
@@ -263,13 +262,7 @@ export function PieDePagina() {
         <div className="footer-grid">
           <div>
             <a className="brand" href="#inicio">
-              <span className="brand-mark" aria-hidden="true">
-                <span>I</span>
-              </span>
-              <span>
-                <span className="brand-name">IMPACTO</span>
-                <span className="brand-sub">ESTUDIO JURÍDICO</span>
-              </span>
+              <Marca />
             </a>
             <p style={{ marginTop: 25, maxWidth: 350 }}>
               Acompañamiento legal profesional, humano y estratégico en Mendoza,

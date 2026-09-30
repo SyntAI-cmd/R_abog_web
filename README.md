@@ -1,8 +1,30 @@
-# vinext-starter
+# IMPACTO Estudio Jurídico
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Sitio institucional en React 19, TypeScript, vinext y Cloudflare D1.
+
+## Integraciones externas
+
+### Turnero de Cal.com
+
+La web usa `@calcom/embed-react@1.5.3`. Hasta completar una ruta real, muestra un contacto alternativo y no publica una agenda ficticia.
+
+```env
+NEXT_PUBLIC_TURNERO_PROVIDER=cal
+NEXT_PUBLIC_CAL_LINK=usuario/consulta-juridica
+```
+
+En Cal.com se debe crear el evento **Consulta jurídica**, zona `America/Argentina/Buenos_Aires`, duración inicial de 45 minutos, margen de 15 minutos y confirmación manual obligatoria. La profesional debe definir horarios, modalidad y ubicación reales. No se necesita una API key para el embed público. Las reservas nuevas se administran en Cal.com; D1 conserva el historial anterior y la moderación local.
+
+### Opiniones de Google
+
+La ruta `/api/google-reviews` usa Places API (New) desde el servidor:
+
+```env
+GOOGLE_PLACES_API_KEY=
+GOOGLE_PLACE_ID=
+```
+
+La clave nunca llega al navegador. Google devuelve como máximo cinco reseñas mediante Place Details y las ordena por relevancia. La interfaz muestra las atribuciones y enlaces de origen. Si faltan credenciales o falla el servicio, se muestra un estado explícito sin testimonios inventados.
 
 ## Prerequisites
 

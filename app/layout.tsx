@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import { esProduccion, origen, schemaDelEstudio } from "../lib/sitio";
 import "./globals.css";
 
-const display = Cormorant_Garamond({
+const display = Playfair_Display({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["500", "600", "700"],
 });
-const sans = Manrope({ variable: "--font-sans", subsets: ["latin"] });
+const sans = Inter({
+  variable: "--font-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 /**
  * Metadatos del sitio.
@@ -77,7 +81,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es-AR">
-      <body className={`${display.variable} ${sans.variable}`}>
+      <body
+        className={`${display.variable} ${sans.variable}`}
+        style={{
+          "--font-display": display.style.fontFamily,
+          "--font-sans": sans.style.fontFamily,
+        } as React.CSSProperties}
+      >
         {children}
         <script
           type="application/ld+json"

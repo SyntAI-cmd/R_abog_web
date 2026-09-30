@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Marca } from "./Marca";
+import { BotonTurno } from "./BotonTurno";
 
 /**
  * Navegación principal.
@@ -25,7 +27,7 @@ const ENLACES = [
   { href: "#turnos", texto: "Reservar turno" },
 ];
 
-export function Navegacion() {
+export function Navegacion({ calActivo = false }: { calActivo?: boolean }) {
   const [abierto, setAbierto] = useState(false);
   const boton = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
@@ -93,13 +95,7 @@ export function Navegacion() {
     <nav className="nav" aria-label="Navegación principal">
       <div className="container nav-in">
         <a className="brand" href="#inicio">
-          <span className="brand-mark" aria-hidden="true">
-            <span>I</span>
-          </span>
-          <span>
-            <span className="brand-name">IMPACTO</span>
-            <span className="brand-sub">ESTUDIO JURÍDICO</span>
-          </span>
+          <Marca compacta />
         </a>
 
         <div className="nav-links">
@@ -110,9 +106,7 @@ export function Navegacion() {
           ))}
         </div>
 
-        <a className="btn btn-primary nav-cta" href="#turnos">
-          Reservar turno <span aria-hidden="true">↗</span>
-        </a>
+        <BotonTurno className="btn nav-cta btn-turno-glass" calActivo={calActivo} />
 
         <button
           ref={boton}

@@ -47,7 +47,7 @@ a {
 
 .display {
   font-family: var(--font-display), serif;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .container {
@@ -135,6 +135,7 @@ a {
   width: 100%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   color: white;
+  font-family: var(--font-sans), sans-serif;
 }
 
 .nav-in {
@@ -270,6 +271,8 @@ a {
   letter-spacing: -0.055em;
   margin: 26px 0 38px;
   max-width: 900px;
+  font-weight: 600;
+  text-wrap: balance;
 }
 
 .hero h1 em {
@@ -806,6 +809,7 @@ a {
   background: #071f20;
   color: white;
   padding: 72px 0 30px;
+  font-family: var(--font-sans), sans-serif;
 }
 
 .footer-grid {
@@ -858,10 +862,19 @@ a {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #d5bd9b;
-  color: #092b2c;
-  font-weight: 900;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: transparent;
+  box-shadow: 0 12px 30px rgba(7, 31, 32, 0.24);
+}
+
+.whatsapp img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: transparent;
 }
 
 .modal-backdrop {
@@ -956,6 +969,12 @@ a {
 }
 
 @media (max-width: 600px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
   .container {
     width: min(100% - 28px, 1180px);
   }
@@ -981,7 +1000,9 @@ a {
   }
 
   .hero h1 {
-    font-size: 3.9rem;
+    font-size: clamp(3rem, 15vw, 3.65rem);
+    line-height: 0.84;
+    overflow-wrap: anywhere;
   }
 
   .hero-proof {
@@ -1046,6 +1067,125 @@ a {
     animation: none;
   }
 }
+
+/* Identidad 2026: tipografía legible, marca original y consultas externas. */
+html { font-size: 18px; }
+body { line-height: 1.6; text-rendering: optimizeLegibility; }
+p, li { text-wrap: pretty; }
+.lead { font-size: 1.08rem; line-height: 1.65; max-width: 65ch; }
+
+.nav { background: linear-gradient(180deg, rgba(9,43,44,.98), rgba(9,43,44,.86)); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.nav-in { min-height: 88px; height: auto; gap: 2rem; }
+.nav-links { gap: clamp(1.25rem, 2.5vw, 2.4rem); font-size: 1rem; font-weight: 700; }
+.nav-links a { opacity: .94; white-space: nowrap; }
+.nav-links a:hover { color: var(--sand); }
+
+.marca { display: inline-flex; align-items: center; gap: .9rem; min-width: 0; }
+.marca-isotipo { width: 64px; height: 64px; object-fit: contain; flex: 0 0 auto; }
+.marca-texto { display: grid; color: #fff; line-height: 1; }
+.marca-texto strong { font-family: var(--font-display), serif; font-size: 2rem; font-weight: 500; letter-spacing: .09em; }
+.marca-texto small { margin-top: .45rem; font-family: var(--font-sans), sans-serif; font-size: .67rem; font-weight: 700; letter-spacing: .24em; }
+.marca--compacta .marca-isotipo { width: 58px; height: 58px; }
+.marca--compacta .marca-texto strong { font-size: 1.72rem; }
+
+.btn-turno-glass { color: #fff; background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.38); box-shadow: inset 0 1px rgba(255,255,255,.25), 0 10px 28px rgba(1,23,24,.28); backdrop-filter: blur(14px) saturate(125%); -webkit-backdrop-filter: blur(14px) saturate(125%); border-radius: 10px; font-size: 1rem; font-weight: 700; white-space: nowrap; }
+.btn-turno-glass:hover { color: var(--petrol-deep); background: rgba(255,255,255,.92); transform: translateY(-2px); }
+.btn-turno-glass:active { transform: translateY(1px); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .btn-turno-glass { background: #315959; } }
+
+.icono-whatsapp-inline { width: 1.45rem; height: 1.45rem; object-fit: contain; }
+.whatsapp { width: 60px; height: 60px; padding: 0; background: transparent; border: 0; }
+
+.reviews-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; }
+.google-resumen { display: grid; justify-items: end; padding-bottom: 1.5rem; }
+.google-resumen strong { font-family: var(--font-display), serif; font-size: 3.4rem; line-height: 1; }
+.google-resumen span:last-child { color: var(--muted); font-size: .9rem; }
+.review-state { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin: 2rem 0; }
+.review-skeleton { min-height: 250px; background: linear-gradient(110deg,#ede7dc 28%,#faf7f1 42%,#ede7dc 56%); background-size: 250% 100%; animation: skeleton 1.6s linear infinite; }
+@keyframes skeleton { to { background-position-x: -250%; } }
+.review-state--mensaje { display: block; max-width: 760px; padding: 2.1rem; border-left: 4px solid var(--sand); background: var(--cream); }
+.review-state--mensaje strong { font-family: var(--font-display),serif; font-size: 1.7rem; }
+.reviews-controls { display: flex; justify-content: flex-end; gap: .65rem; margin: 1rem 0; }
+.reviews-controls button { width: 48px; height: 48px; border: 1px solid var(--line); color: var(--petrol); background: #fff; font-size: 1.4rem; cursor: pointer; transition: .2s; }
+.reviews-controls button:hover { color: #fff; background: var(--petrol); }
+.google-carousel { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(320px, 36%); gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-color: var(--sand) var(--cream); padding-bottom: 1rem; }
+.google-review { width: auto; min-height: 320px; scroll-snap-align: start; display: flex; flex-direction: column; }
+.google-review header { display: flex; gap: .8rem; align-items: center; }
+.google-review header img { width: 46px; height: 46px; border-radius: 50%; }
+.google-review p { font-size: 1.2rem; }
+.google-review time { color: var(--muted); font-size: .82rem; }
+.review-source { margin-top: auto; color: var(--petrol); font-size: .9rem; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+.reviews-nota { max-width: 72ch; color: var(--muted); font-size: .82rem; }
+
+.preview-opiniones { margin-top: 2rem; }
+.preview-aviso { max-width: 72ch; margin: 0 0 1.4rem; padding-left: 1rem; border-left: 3px solid var(--sand); color: var(--muted); font-size: .9rem; }
+.preview-aviso strong { color: var(--petrol-deep); }
+.preview-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 1rem; }
+.preview-card { position: relative; min-height: 290px; padding: 2rem 1.4rem 1.5rem; overflow: hidden; isolation: isolate; background: var(--cream); border: 1px solid rgba(18,61,61,.11); border-radius: 6px; box-shadow: 0 12px 35px rgba(9,43,44,.07); transition: transform .25s ease,border-color .25s ease,box-shadow .25s ease; }
+.preview-card::before { content: ""; position: absolute; z-index: -1; top: -1rem; right: -1rem; width: 2rem; height: 2rem; border-radius: 50%; background: var(--petrol); transform: scale(1); transform-origin: 50% 50%; transition: transform .32s cubic-bezier(.2,.75,.25,1); }
+.preview-card:hover { transform: translateY(-5px); border-color: var(--petrol); box-shadow: 0 18px 45px rgba(9,43,44,.15); }
+.preview-card:hover::before { transform: scale(24); }
+.preview-card-corner { position: absolute; top: 0; right: 0; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; color: var(--petrol-deep); background: var(--sand); border-radius: 0 6px 0 2.5rem; }
+.preview-card-corner span { margin: -.25rem -.25rem 0 0; font-size: 1rem; transition: transform .25s ease; }
+.preview-card:hover .preview-card-corner span { transform: translateX(2px); }
+.preview-card-index { display: block; margin-bottom: 1.5rem; color: #7a5f38; font-size: .72rem; font-weight: 700; letter-spacing: .16em; }
+.preview-card .stars { color: #9a713b; }
+.preview-card h3 { margin: .6rem 0 .75rem; color: var(--petrol-deep); font-family: var(--font-display),serif; font-size: 1.55rem; line-height: 1.05; }
+.preview-card p { margin: 0; color: var(--muted); font-size: .94rem; line-height: 1.65; }
+.preview-card small { display: block; margin-top: 1.5rem; color: #7a5f38; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.preview-card:hover :is(.preview-card-index,.stars,h3,p,small) { color: rgba(255,255,255,.92); }
+.preview-card:focus-within { outline: 3px solid var(--sand); outline-offset: 3px; }
+
+@media (max-width: 1050px) {
+  .preview-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+
+@media (max-width: 600px) {
+  .preview-grid { display: grid; grid-auto-flow: column; grid-auto-columns: 88%; grid-template-columns: none; overflow-x: auto; scroll-snap-type: x mandatory; padding: .25rem .15rem 1rem; }
+  .preview-card { min-height: 270px; scroll-snap-align: start; }
+}
+
+.booking-shell { grid-template-columns: .8fr 1.2fr; }
+.booking-info p { font-size: 1.06rem; }
+.booking-action { min-width: 0; display: grid; place-items: center; padding: clamp(2rem,5vw,4.5rem); background: radial-gradient(circle at 78% 20%,rgba(213,189,155,.24),transparent 33%),var(--ivory); }
+.booking-action-inner { width: min(560px,100%); }
+.booking-action h3 { margin: .7rem 0; font-size: clamp(2.3rem,4vw,4rem); line-height: .95; }
+.booking-action p { color: var(--muted); }
+.booking-logo,
+.cal-logo { display: flex; justify-content: center; margin: 0 auto 1.5rem; }
+.booking-logo .marca,
+.cal-logo .marca { justify-content: center; }
+.booking-logo .marca-isotipo { width: 78px; height: 78px; }
+.cal-logo .marca-isotipo { width: 64px; height: 64px; }
+.booking-logo .marca-texto,
+.cal-logo .marca-texto { color: var(--petrol-deep); }
+.booking-logo .marca-texto strong,
+.cal-logo .marca-texto strong { font-family: var(--font-display), serif; }
+.booking-action .btn { margin-top: 1rem; }
+.booking-link { display: block; margin-top: 1rem; color: var(--petrol); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+.btn-whatsapp { color: var(--petrol-deep); background: #fff; border-color: rgba(18,61,61,.2); }
+.btn-whatsapp img { width: 1.5rem; height: 1.5rem; }
+.privacy-note a { color: var(--sand); text-decoration: underline; text-underline-offset: 4px; }
+
+.modal { width: min(1120px, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); overflow-y: auto; padding: clamp(1.25rem,3vw,2.5rem); }
+.cal-dialogo-cabecera { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
+.cal-dialogo-cabecera h2 { margin: .25rem 0; font-size: clamp(2.4rem,5vw,4.5rem); }
+.cal-intro { max-width: 65ch; color: var(--muted); }
+.cal-logo { margin-top: 1.5rem; }
+.cal-contenedor { width: 100%; min-height: 630px; margin-top: .5rem; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.cal-estado { padding: 1rem; background: var(--cream); }
+.cal-alternativas { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; }
+.btn-outline-dark { color: var(--petrol); border-color: var(--petrol); background: transparent; }
+.admin-migracion { padding: 1.25rem; margin: 1rem 0 2rem; background: var(--cream); border-left: 4px solid var(--sand); }
+
+.footer .marca { margin-bottom: 1.5rem; }
+.footer a, .footer p { font-family: var(--font-sans),sans-serif; font-size: 1rem; }
+.footer a { color: #fff; font-weight: 700; }
+
+@media (max-width: 1100px) { .nav-links { font-size: .9rem; gap: 1rem; } .marca--compacta .marca-texto { display: none; } }
+@media (max-width: 900px) { html { font-size: 17px; } .nav-in { min-height: 78px; } .marca--compacta .marca-texto { display: grid; } .reviews-head { grid-template-columns: 1fr; } .google-resumen { justify-items: start; } .google-carousel { grid-auto-columns: minmax(300px, 82%); } .review-state { grid-template-columns: 1fr; } .review-skeleton:nth-child(n+2) { display:none; } .booking-action { min-height: 440px; } }
+@media (max-width: 600px) { .marca--compacta .marca-isotipo { width: 48px; height: 48px; } .marca--compacta .marca-texto strong { font-size: 1.35rem; } .marca--compacta .marca-texto small { font-size: .52rem; } .google-carousel { grid-auto-columns: 92%; } .booking-logo .marca-isotipo, .cal-logo .marca-isotipo { width: 54px; height: 54px; } .booking-logo .marca-texto strong, .cal-logo .marca-texto strong { font-size: 1.55rem; } .booking-logo .marca-texto small, .cal-logo .marca-texto small { font-size: .58rem; } .cal-contenedor { min-height: 680px; border-radius: 8px; } .cal-alternativas { display: grid; } .cal-alternativas .btn { width: 100%; } .footer-grid { gap: 2.5rem; } }
+@media (prefers-reduced-motion: reduce) { .review-skeleton { animation: none; } .google-carousel { scroll-behavior: auto; } }
 /* ═══════════════════════════════════════════════════════════════════════════
    ACCESIBILIDAD Y COMPONENTES DE LA SEGUNDA PASADA
    ═══════════════════════════════════════════════════════════════════════════ */

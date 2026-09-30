@@ -12,6 +12,7 @@ import {
   PieDePagina,
 } from "./components/Secciones";
 import { whatsapp } from "../lib/contacto";
+import { PROVEEDOR_TURNOS } from "../lib/turnero-config";
 
 /**
  * Composición de la página principal.
@@ -35,7 +36,7 @@ export function ImpactoSite() {
         Ir al contenido principal
       </a>
 
-      <Navegacion />
+      <Navegacion calActivo={PROVEEDOR_TURNOS === "cal"} />
 
       <main>
         <Hero />
@@ -60,7 +61,7 @@ export function ImpactoSite() {
           "Hola, quiero realizar una consulta con IMPACTO Estudio Jurídico.",
         )}
       >
-        <span aria-hidden="true">WA</span>
+        <img src="/whatsapp.svg" alt="" width="56" height="56" />
       </a>
     </>
   );

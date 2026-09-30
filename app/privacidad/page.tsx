@@ -35,17 +35,17 @@ export default function Privacidad() {
 
       <h3>Solicitud de turno</h3>
       <p className="lead">
-        El formulario del turnero pide <strong>nombre y apellido</strong>,{" "}
-        <strong>edad</strong> y una{" "}
-        <strong>descripción breve de tu situación</strong>, junto con el día y
-        el horario elegidos. Se usan únicamente para gestionar esa consulta y
+        La agenda de Cal.com solicita <strong>nombre y apellido</strong>,{" "}
+        <strong>correo</strong>, <strong>teléfono de contacto</strong> y una
+        categoría breve de consulta, junto con el día y el horario elegidos.
+        Se usan únicamente para gestionar la consulta, enviar avisos y
         comunicarnos con vos.
       </p>
       <p className="lead">
         Te pedimos que{" "}
         <strong>
-          no incluyas información médica, números de documento ni datos de
-          terceros
+          no incluyas documentación, información médica, números de documento
+          ni datos de terceros
         </strong>{" "}
         en ese campo: para eso está la consulta, no el formulario.
       </p>
@@ -81,19 +81,29 @@ export default function Privacidad() {
           píxeles ni etiquetas publicitarias.
         </li>
         <li>
-          <strong>No escribe cookies</strong> para visitantes. El único uso de
-          cookies es la sesión de quien administra el sitio, que necesita
-          iniciar sesión para entrar al panel.
+          <strong>La agenda es provista por Cal.com.</strong> Al abrirla, ese
+          servicio puede tratar datos técnicos y utilizar almacenamiento o
+          cookies necesarios para prestar la reserva. Consultá también la
+          política de privacidad de Cal.com antes de enviar tus datos.
         </li>
         <li>
-          <strong>No se comparten los datos con terceros</strong> con fines
-          comerciales ni publicitarios.
+          <strong>No vendemos datos ni los compartimos con fines publicitarios.</strong>{" "}
+          Cal.com y el calendario conectado reciben los datos necesarios para
+          administrar la reserva y enviar sus comunicaciones.
         </li>
         <li>
           <strong>El acceso al panel está restringido</strong> a las cuentas
           expresamente autorizadas.
         </li>
       </ul>
+
+      <h2>Opiniones de Google</h2>
+      <p className="lead">
+        La página puede mostrar reseñas públicas obtenidas mediante Google
+        Places. Se presentan con la atribución, fecha relativa y enlace a la
+        fuente que entrega Google. El sitio no guarda copias permanentes de ese
+        contenido y Google puede tratar datos técnicos al abrir sus enlaces.
+      </p>
 
       <h2>Conservación de los datos</h2>
       <p className="lead">

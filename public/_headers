@@ -15,8 +15,7 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
   Cross-Origin-Opener-Policy: same-origin
 
-  # CSP. El sitio no carga scripts de terceros ni incrusta nada externo, asi que
-  # todo puede quedar en 'self'.
+  # Cal.com se carga exclusivamente desde sus orígenes oficiales.
   #
   # 'unsafe-inline' en script-src es, hoy, inevitable: React inyecta el payload
   # de hidratacion como script en linea y vinext no expone un nonce por peticion.
@@ -26,7 +25,7 @@
   # propio (el JSON-LD), no entrada de usuario.
   #
   # 'unsafe-inline' en style-src es por la misma razon: estilos en linea de React.
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self' https://cal.com; script-src 'self' 'unsafe-inline' https://app.cal.com https://cal.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://cal.com https://app.cal.com; img-src 'self' data: https:; connect-src 'self' https://cal.com https://app.cal.com https://api.cal.com; frame-src https://cal.com https://app.cal.com; upgrade-insecure-requests
 
 # El panel de administracion nunca se cachea ni se indexa.
 /admin

@@ -5,6 +5,7 @@ import {
   type Slot,
 } from "../../../lib/agenda";
 import { getD1, hayBase } from "../../../db";
+import { agendaLocalActiva } from "../../../lib/turnero-config";
 
 /**
  * Horarios que el estudio ofrece y todavía están libres.
@@ -21,6 +22,7 @@ import { getD1, hayBase } from "../../../db";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  if (!agendaLocalActiva()) return NextResponse.json({ slots: [], dias: [], disponible: false, proveedor: "externo" }, { status: 410, headers: { "cache-control": "no-store" } });
   if (!hayBase()) {
     // Sin base no se puede saber qué hay disponible. Se responde vacío con una
     // marca explícita para que la interfaz distinga «no hay turnos» de «no se
