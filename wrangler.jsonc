@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "impacto-estudio-juridico",
+  "main": "dist/server/index.js",
+  "compatibility_date": "2026-05-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "dist/client"
+  },
+  "vars": {
+    "NEXT_PUBLIC_TURNERO_PROVIDER": "cal",
+    "NEXT_PUBLIC_CAL_LINK": "ryzen-box-p1usex/secret"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
